@@ -67,7 +67,7 @@ LOCAL_LISTEN_ADDR=127.0.0.1:
 ###   TLD_SUFFIX=local
 ### Makes your project available under xxxx.local
 ###
-TLD_SUFFIX=loc
+TLD_SUFFIX=code
 
 
 ###
@@ -122,8 +122,8 @@ TIMEZONE=Europe/Berlin
 #PHP_SERVER=php-fpm-5.5
 #PHP_SERVER=php-fpm-5.6
 #PHP_SERVER=php-fpm-7.0
-PHP_SERVER=php-fpm-7.1
-#PHP_SERVER=php-fpm-7.2
+#PHP_SERVER=php-fpm-7.1
+PHP_SERVER=php-fpm-7.2
 #PHP_SERVER=hhvm-latest
 
 

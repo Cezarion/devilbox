@@ -3,6 +3,7 @@
 [![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
+[Usage as a common stack](# usage-as-a-common-stack) |
 [Usage](#usage) |
 [Features](#feature-overview) |
 [Documentation](#documentation) |
@@ -29,8 +30,54 @@ Configuration is not necessary, as everything is pre-setup with mass virtual hos
 
 ---
 
+## Usage as a common stack (Fabernovel Code Stack)
 
-## Usage
+We use Devilbox as a common stack. 
+Devilbox .env config is not use from this directory but per project. 
+
+#### Init Devilbox stack
+
+Install required configuration
+* This will create a www-docker folder next to the current folder
+* This will create a .devilbox file in the www-docker folder
+* The .devilbox file contains the devilbox directory and the full path to the www-docker folder
+
+```shell
+# Init local stack from current directory
+$ ./install.sh 
+```
+
+
+```shell
+# Init local stack from current directory
+$ ls -l ../
+drwxr-xr-x  22 cezarion  staff   748B 28 jul 15:03 devilbox
+drwxr-xr-x   5 cezarion  staff   170B 28 jul 16:27 www-docker
+```
+
+
+```shell
+# Init local stack from current directory
+$ cat ../www-docker/.devilbox
+# This file is generated automatically, does not edit or does not restart the install.sh script in Devilbox
+HOST_PATH_HTTPD_DATADIR=/Users/me/Webserver/devilbox/../www-docker
+DEVILBOX_LOCAL_PATH=/Users/me/Webserver/devilbox
+```
+
+#### Start a project
+
+We will configure the docker stack by project. So we do not use the .env file in the devilbox folder but within the projects.
+
+The env-example file provided by devil box serves as a reference.
+It can be copied into the project or is provided in the skeleton.
+
+```shell
+$ cd ../www-docker
+$ git clone git@bitbucket.org:buzzaka/skeleton.git
+$ cd skeleton
+```
+
+## Usage (Regular use)
 
 #### Quick start
 
