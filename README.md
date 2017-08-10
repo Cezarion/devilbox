@@ -32,6 +32,15 @@ Configuration is not necessary, as everything is pre-setup with mass virtual hos
 
 ## Usage as a common stack (Fabernovel Code Stack)
 
+
+### Clone oour skeleton branch
+
+```shell
+# Clone 
+$ git clone git@bitbucket.org:buzzaka/devilbox.git -b devilbox && cd devilbox
+```
+
+
 We use Devilbox as a common stack. 
 Devilbox .env config is not use from this directory but per project. 
 
