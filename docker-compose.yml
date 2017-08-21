@@ -50,7 +50,7 @@ services:
       ##
       - WILDCARD_DOMAIN=${TLD_SUFFIX:-loc}
       - WILDCARD_ADDRESS=172.16.238.11
-      - BIND_DNS_RESOLVER=${BIND_DNS_RESOLVER:-8.8.8.8,8.8.4.4}
+      - DNS_FORWARDER=${BIND_DNS_RESOLVER:-8.8.8.8,8.8.4.4}
 
     dns:
       - 127.0.0.1
@@ -180,6 +180,13 @@ services:
       # Mount devilbox user-defined *.ini files in order
       # to overwrite the default PHP configuration
       - ${DEVILBOX_PATH}/cfg/${PHP_SERVER}:/etc/php-custom.d:ro
+
+      # Mount devilbox user-defined *.so files in order
+      # to load custom PHP modules
+      - ${DEVILBOX_PATH}/mod/${PHP_SERVER}:/usr/lib64/php/custom-modules:ro
+
+      # Mount devilbox user-defined bash config
+      - ${DEVILBOX_PATH}/bash:/etc/bashrc-devilbox.d
 
       # Mount custom mass virtual hosting
       # (configured in /etc/${HTTPD_SERVER}/02-vhost-mass.conf)
