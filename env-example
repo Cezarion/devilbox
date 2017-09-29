@@ -351,6 +351,10 @@ PHP_XDEBUG_REMOTE_HOST=192.168.0.215
 ###
 HOST_PORT_HTTPD=80
 
+###
+### HTTPD Listen this port (default 80)
+###
+HTTPD_PORT=80
 
 
 ################################################################################
