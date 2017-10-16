@@ -3,7 +3,7 @@
 [![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-[Usage as a common stack](#usage-as-a-common-stack) |
+[Usage as a common stack](#markdown-header-usage-as-a-common-stack) |
 [Usage](#usage) |
 [Features](#feature-overview) |
 [Documentation](#documentation) |
@@ -30,7 +30,7 @@ Configuration is not necessary, as everything is pre-setup with mass virtual hos
 
 ---
 
-## Usage as a common stack (Fabernovel Code Stack)
+## Usage as a common stack (Fabernovel Code Stack) #usage-as-a-common-stack
 
 
 ### Clone oour skeleton branch
