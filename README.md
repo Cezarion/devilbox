@@ -30,7 +30,7 @@ Configuration is not necessary, as everything is pre-setup with mass virtual hos
 
 ---
 
-## Usage as a common stack (Fabernovel Code Stack) #usage-as-a-common-stack
+## Usage as a common stack (Fabernovel Code Stack) [#usage-as-a-common-stack]
 
 
 ### Clone oour skeleton branch
