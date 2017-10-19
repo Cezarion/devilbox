@@ -67,7 +67,7 @@ drwxr-xr-x   5 cezarion  staff   170B 28 jul 16:27 www-docker
 
 ```shell
 # Init local stack from current directory
-$ cat ../www-docker/.devilbox
+$ cat ~/.devilbox
 # This file is generated automatically, does not edit or does not restart the install.sh script in Devilbox
 HOST_PATH_HTTPD_DATADIR=/Users/me/Webserver/devilbox/../www-docker
 DEVILBOX_LOCAL_PATH=/Users/me/Webserver/devilbox
@@ -82,8 +82,8 @@ It can be copied into the project or is provided in the skeleton.
 
 ```shell
 $ cd ../www-docker
-$ git clone git@bitbucket.org:buzzaka/skeleton.git
-$ cd skeleton
+$ mkdir new-project && cd $_
+$ yalla init
 ```
 
 ## Usage (Regular use)
