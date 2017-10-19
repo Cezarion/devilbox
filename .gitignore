@@ -133,3 +133,8 @@ $RECYCLE.BIN/
 *.bbprojectd
 *.bbproject
 
+######################################
+# Editors Linter
+######################################
+
+.sonarlint

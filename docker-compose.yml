@@ -163,9 +163,8 @@ services:
   # Web Server
   # ------------------------------------------------------------
   httpd:
-    image: fabernovel/docker-apache-2.4
-    #image: cytopia/${HTTPD_SERVER:-nginx-stable}:latest
-    #image: devilbox/${HTTPD_SERVER:-nginx-stable}:0.12
+    #image: fabernovel/docker-apache-2.4
+    image: devilbox/${HTTPD_SERVER:-nginx-stable}:0.12
     restart: always
 
     environment:
