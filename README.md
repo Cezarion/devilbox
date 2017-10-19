@@ -37,7 +37,7 @@ Configuration is not necessary, as everything is pre-setup with mass virtual hos
 
 ```shell
 # Clone
-$ git clone git@bitbucket.org:buzzaka/devilbox.git -b devilbox && cd devilbox
+$ git clone git@bitbucket.org:buzzaka/devilbox.git -b skeleton-stack && cd devilbox
 ```
 
 
