@@ -375,7 +375,7 @@ PHP_XDEBUG_REMOTE_HOST=192.168.0.215
 ################################################################################
 
 ###
-### Expose HTTPD Port to Host
+### Expose HTTPD Port to Host (default 80)
 ###
 HOST_PORT_HTTPD=80
 
@@ -400,6 +400,15 @@ HTTPD_DOCROOT_DIR=htdocs
 HTTPD_TEMPLATE_DIR=.devilbox
 
 
+###
+### Expose SSL HTTPD Port to Host (default 443)
+###
+HOST_SSL_PORT_HTTPD=443
+
+###
+### SSL HTTPD Listen this port (default 443)
+###
+HTTPD_SSL_PORT=443
 
 ################################################################################
 ###

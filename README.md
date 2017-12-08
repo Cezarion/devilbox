@@ -6,6 +6,8 @@
 
 [![Join the chat at https://gitter.im/devilbox/Lobby](https://badges.gitter.im/devilbox/Lobby.svg)](https://gitter.im/devilbox/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[Usage as a common stack](#markdown-header-usage-as-a-common-stack-fabernovel-code-stack) |[Usage](#usage) |[Features](#feature-overview) |[Documentation](#documentation) |[Run-time Matrix](#run-time-matrix) |[Intranet](#intranet-overview) |[Screenshots](#screenshots) |[Contributing](#contributing) |[License](#license)
+
 **[Usage](#usage)** |**[Features](#feature-overview)** |**[Documentation](#documentation)** |[Run-time Matrix](#run-time-matrix) |**[Intranet](#intranet-overview)** |**[Screenshots](#screenshots)** |**[Contributing](#contributing)** |**[License](#license)**
 
 [![Build Status](https://travis-ci.org/cytopia/devilbox.svg?branch=master)](https://travis-ci.org/cytopia/devilbox) ![Tag](https://img.shields.io/github/tag/cytopia/devilbox.svg) [![type](https://img.shields.io/badge/type-Docker-orange.svg)](https://www.docker.com/) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -14,8 +16,17 @@ The devilbox is a modern and highly customisable **dockerized PHP stack** suppor
 
 ![Linux](https://raw.githubusercontent.com/cytopia/icons/master/64x64/linux.png) ![Windows](https://raw.githubusercontent.com/cytopia/icons/master/64x64/windows.png) ![OSX](https://raw.githubusercontent.com/cytopia/icons/master/64x64/osx.png)
 
+*We use Devilbox as a common stack. Devilbox .env config is not use from this directory but per project.*
+
 Usage as a common stack (Fabernovel Code Stack)
 -----------------------------------------------
+
+### Clone oour skeleton branch
+
+```shell
+# Clone
+$ git clone git@bitbucket.org:buzzaka/devilbox.git -b skeleton-stack && cd devilbox
+```
 
 We use Devilbox as a common stack. Devilbox .env config is not use from this directory but per project.
 
@@ -37,7 +48,7 @@ drwxr-xr-x   5 cezarion  staff   170B 28 jul 16:27 www-docker
 
 ```shell
 # Init local stack from current directory
-$ cat ../www-docker/.devilbox
+$ cat ~/.devilbox
 # This file is generated automatically, does not edit or does not restart the install.sh script in Devilbox
 HOST_PATH_HTTPD_DATADIR=/Users/me/Webserver/devilbox/../www-docker
 DEVILBOX_LOCAL_PATH=/Users/me/Webserver/devilbox
@@ -51,8 +62,8 @@ The env-example file provided by devil box serves as a reference. It can be copi
 
 ```shell
 $ cd ../www-docker
-$ git clone git@bitbucket.org:buzzaka/skeleton.git
-$ cd skeleton
+$ mkdir new-project && cd $_
+$ yalla init
 ```
 
 Usage (Regular use)
@@ -91,108 +102,15 @@ $ docker-compose up httpd php mysql redis
 
 Every single attachable container comes with many different versions. In order to select the desired version for a container, simply edit the `.env` file and uncomment the version of choice. Any combination is possible.
 
-<table>
-  <thead>
-    <tr>
-      <th>Apache</th>
-      <th>Nginx</th>
-      <th>PHP</th>
-      <th>MySQL</th>
-      <th>MariaDB</th>
-      <th>Percona</th>
-      <th>PgSQL</th>
-      <th>Redis</th>
-      <th>Memcached</th>
-      <th>MongoDB</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a target="_blank" title="Apache 2.2"       href="https://github.com/devilbox/docker-apache-2.2">2.2</a></td>
-      <td><a target="_blank" title="Nginx stable"     href="https://github.com/devilbox/docker-nginx-stable">stable</a></td>
-      <td><a target="_blank" title="PHP 5.4"          href="https://github.com/cytopia/docker-php-fpm-5.4">5.4</a></td>
-      <td><a target="_blank" title="MySQL 5.5"        href="https://github.com/cytopia/docker-mysql-5.5">5.5</a></td>
-      <td><a target="_blank" title="MariaDB 5.5"      href="https://github.com/cytopia/docker-mariadb-5.5">5.5</a></td>
-      <td><a target="_blank" title="PerconaDB 5.5"    href="https://github.com/cytopia/docker-percona-5.5">5.5</a></td>
-      <td><a target="_blank" title="PgSQL 9.1"        href="https://github.com/docker-library/postgres">9.1</a></td>
-      <td><a target="_blank" title="Redis 2.8"        href="https://github.com/docker-library/redis">2.8</a></td>
-      <td><a target="_blank" title="Memcached 1.4.21" href="https://github.com/docker-library/memcached">1.4.21</a></td>
-      <td><a target="_blank" title="MongoDB 2.8"      href="https://github.com/docker-library/mongo">2.8</a></td>
-    </tr>
-    <tr>
-      <td><a target="_blank" title="Apache 2.4"       href="https://github.com/devilbox/docker-apache-2.4">2.4</a></td>
-      <td><a target="_blank" title="Nginx mainline"   href="https://github.com/devilbox/docker-nginx-mainline">mainline</a></td>
-      <td><a target="_blank" title="PHP 5.5"          href="https://github.com/cytopia/docker-php-fpm-5.5">5.5</a></td>
-      <td><a target="_blank" title="MySQL 5.6"        href="https://github.com/cytopia/docker-mysql-5.6">5.6</a></td>
-      <td><a target="_blank" title="MariaDB 10.0"     href="https://github.com/cytopia/docker-mariadb-10.0">10.0</a></td>
-      <td><a target="_blank" title="PerconaDB 5.6"    href="https://github.com/cytopia/docker-percona-5.6">5.6</a></td>
-      <td><a target="_blank" title="PgSQL 9.2"        href="https://github.com/docker-library/postgres">9.2</a></td>
-      <td><a target="_blank" title="Redis 3.0"        href="https://github.com/docker-library/redis">3.0</a></td>
-      <td><a target="_blank" title="Memcached 1.4.22" href="https://github.com/docker-library/memcached">1.4.22</a></td>
-      <td><a target="_blank" title="MongoDB 3.0"      href="https://github.com/docker-library/mongo">3.0</a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PHP 5.6"          href="https://github.com/cytopia/docker-php-fpm-5.6">5.6</a></td>
-      <td><a target="_blank" title="MySQL 5.7"        href="https://github.com/cytopia/docker-mysql-5.7">5.7</a></td>
-      <td><a target="_blank" title="MariaDB 10.1"     href="https://github.com/cytopia/docker-mariadb-10.1">10.1</a></td>
-      <td><a target="_blank" title="PerconaDB 5.7"    href="https://github.com/cytopia/docker-percona-5.7">5.7</a></td>
-      <td><a target="_blank" title="PgSQL 9.3"        href="https://github.com/docker-library/postgres">9.3</a></td>
-      <td><a target="_blank" title="Redis 3.2"        href="https://github.com/docker-library/redis">3.2</a></td>
-      <td><a target="_blank" title="Memcached 1.4.23" href="https://github.com/docker-library/memcached">1.4.23</a></td>
-      <td><a target="_blank" title="MongoDB 3.2"      href="https://github.com/docker-library/mongo">3.2</a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PHP 7.0"          href="https://github.com/cytopia/docker-php-fpm-7.0">7.0</a></td>
-      <td><a target="_blank" title="MySQL 8.0"        href="https://github.com/cytopia/docker-mysql-8.0">8.0</a></td>
-      <td><a target="_blank" title="MariaDB 10.2"     href="https://github.com/cytopia/docker-mariadb-10.2">10.2</a></td>
-      <td></td>
-      <td><a target="_blank" title="PgSQL 9.4"        href="https://github.com/docker-library/postgres">9.4</a></td>
-      <td><a target="_blank" title="Redis 4.0"        href="https://github.com/docker-library/redis">4.0</a></td>
-      <td><a target="_blank" title="Memcached 1.4.23" href="https://github.com/docker-library/memcached">1.4.24</a></td>
-      <td><a target="_blank" title="MongoDB 3.4"      href="https://github.com/docker-library/mongo">3.4</a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PHP 7.1"          href="https://github.com/cytopia/docker-php-fpm-7.1">7.1</a></td>
-      <td></td>
-      <td><a target="_blank" title="MariaDB 10.3"     href="https://github.com/cytopia/docker-mariadb-10.3">10.3</a></td>
-      <td></td>
-      <td><a target="_blank" title="PgSQL 9.5"        href="https://github.com/docker-library/postgres">9.5</a></td>
-      <td></td>
-      <td>...</td>
-      <td><a target="_blank" title="MongoDB 3.5"      href="https://github.com/docker-library/mongo">3.5</a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PHP 7.2"          href="https://github.com/cytopia/docker-php-fpm-7.2">7.2</a></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PgSQL 9.6"        href="https://github.com/docker-library/postgres">9.6</a></td>
-      <td></td>
-      <td><a target="_blank" title="Memcached 1.5.2"  href="https://github.com/docker-library/memcached">1.5.2</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="HHVM"             href="https://github.com/cytopia/docker-hhvm-latest">HHVM</a></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><a target="_blank" title="PgSQL 10.0"       href="https://github.com/docker-library/postgres">10.0</a></td>
-      <td></td>
-      <td><a target="_blank" title="Memcached latest" href="https://github.com/docker-library/memcached">latest</a></td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
+| Apache                                              | Nginx                                                        | PHP                                                   | MySQL                                              | MariaDB                                                | Percona                                              | PgSQL                                             | Redis                                          | Memcached                                             | MongoDB                                        |
+|-----------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------|----------------------------------------------------|--------------------------------------------------------|------------------------------------------------------|---------------------------------------------------|------------------------------------------------|-------------------------------------------------------|------------------------------------------------|
+| [2.2](https://github.com/cytopia/docker-apache-2.2) | [stable](https://github.com/cytopia/docker-nginx-stable)     | [5.4](https://github.com/cytopia/docker-php-fpm-5.4)  | [5.5](https://github.com/cytopia/docker-mysql-5.5) | [5.5](https://github.com/cytopia/docker-mariadb-5.5)   | [5.5](https://github.com/cytopia/docker-percona-5.5) | [9.1](https://github.com/docker-library/postgres) | [2.8](https://github.com/docker-library/redis) | [1.4.21](https://github.com/docker-library/memcached) | [2.8](https://github.com/docker-library/mongo) |
+| [2.4](https://github.com/cytopia/docker-apache-2.4) | [mainline](https://github.com/cytopia/docker-nginx-mainline) | [5.5](https://github.com/cytopia/docker-php-fpm-5.5)  | [5.6](https://github.com/cytopia/docker-mysql-5.6) | [10.0](https://github.com/cytopia/docker-mariadb-10.0) | [5.6](https://github.com/cytopia/docker-percona-5.6) | [9.2](https://github.com/docker-library/postgres) | [3.0](https://github.com/docker-library/redis) | [1.4.22](https://github.com/docker-library/memcached) | [3.0](https://github.com/docker-library/mongo) |
+|                                                     |                                                              | [5.6](https://github.com/cytopia/docker-php-fpm-5.6)  | [5.7](https://github.com/cytopia/docker-mysql-5.7) | [10.1](https://github.com/cytopia/docker-mariadb-10.1) | [5.7](https://github.com/cytopia/docker-percona-5.7) | [9.3](https://github.com/docker-library/postgres) | [3.2](https://github.com/docker-library/redis) | [1.4.23](https://github.com/docker-library/memcached) | [3.2](https://github.com/docker-library/mongo) |
+|                                                     |                                                              | [7.0](https://github.com/cytopia/docker-php-fpm-7.0)  | [8.0](https://github.com/cytopia/docker-mysql-8.0) | [10.2](https://github.com/cytopia/docker-mariadb-10.2) |                                                      | [9.4](https://github.com/docker-library/postgres) |                                                | [1.4.24](https://github.com/docker-library/memcached) | [3.4](https://github.com/docker-library/mongo) |
+|                                                     |                                                              | [7.1](https://github.com/cytopia/docker-php-fpm-7.1)  |                                                    | [10.3](https://github.com/cytopia/docker-mariadb-10.3) |                                                      | [9.5](https://github.com/docker-library/postgres) |                                                | ...                                                   | [3.5](https://github.com/docker-library/mongo) |
+|                                                     |                                                              | [7.2](https://github.com/cytopia/docker-php-fpm-7.2)  |                                                    |                                                        |                                                      | [9.6](https://github.com/docker-library/postgres) |                                                | [1.4.36](https://github.com/docker-library/memcached) |                                                |
+|                                                     |                                                              | [HHVM](https://github.com/cytopia/docker-hhvm-latest) |                                                    |                                                        |                                                      |                                                   |                                                | [latest](https://github.com/docker-library/memcached) |                                                |
 
 #### Enter the container
 
