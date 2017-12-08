@@ -19,7 +19,8 @@ echo ""
 # Put local environement into
 echo "${BLUE} Put Webserver path into .env  ${NORMAL}";
 
-ORI_DIR='./data/www';
+cp env-code-sample .env
+sed -i '' "s|HOST_PATH_HTTPD_DATADIR=./data/www|HOST_PATH_HTTPD_DATADIR=${WEB_PATH}|g" .env
 
 echo "${BLUE} Write local environnement into ${HOME}/.devilbox ${NORMAL}";
 
