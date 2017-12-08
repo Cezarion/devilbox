@@ -123,8 +123,8 @@ class Helper
 
 		// New request, generic check
 		// Note the traiing dot to prevent recursive lookups
-		$ip = $this->exec('ping -c 1 '.$hostname.'. 2>/dev/null | grep -Eo \'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\' | head -1');
-		//$ip = gethostbyname($hostname.'');
+		//$ip = $this->exec('ping -c 1 '.$hostname.'. 2>/dev/null | grep -Eo \'[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\' | head -1');
+		$ip = gethostbyname($hostname.'');
 
 		if (filter_var($ip, FILTER_VALIDATE_IP) === false) {
 			//loadClass('Logger')->error('Retrieving the IP address of host \''.$hostname.'\' failed: '.$ip);
@@ -171,5 +171,65 @@ class Helper
 
 		exec($cmd, $output, $exit_code);
 		return implode ("\n", $output);
+	}
+
+
+	public function redirect($url)
+	{
+		header('Location: '.$url);
+		exit;
+	}
+
+
+	/*********************************************************************************
+	 *
+	 * Login Helper Functions
+	 *
+	 *********************************************************************************/
+
+	public function login($username, $password)
+	{
+		$dvl_password = loadClass('Helper')->getEnv('DEVILBOX_UI_PASSWORD');
+
+		if ($username == 'devilbox' && $password == $dvl_password) {
+			$_SESSION['auth'] = 1;
+			return true;
+		}
+		return false;
+	}
+	public function logout()
+	{
+		if (isset($_SESSION['auth'])) {
+			$_SESSION['auth'] = 0;
+			unset($_SESSION['auth']);
+		}
+	}
+	public function isLoginProtected()
+	{
+		// No password protection enabled
+		if (loadClass('Helper')->getEnv('DEVILBOX_UI_PROTECT') != 1) {
+			return false;
+		}
+		return true;
+
+	}
+	public function isloggedIn()
+	{
+		// No password protection enabled
+		if (!$this->isLoginProtected()) {
+			return true;
+		}
+
+		// Alredy logged in
+		if (isset($_SESSION['auth']) && $_SESSION['auth'] == 1) {
+			return true;
+		}
+		return false;
+	}
+	public function authPage()
+	{
+		if (!$this->isloggedIn()) {
+			$this->redirect('/login.php');
+		}
 	}
 }

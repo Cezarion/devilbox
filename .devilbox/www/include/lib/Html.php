@@ -91,7 +91,8 @@ class Html
 				),
 				array(
 					'name' => 'Adminer',
-					'path' => '/vendor/adminer-4.3.1/adminer/index.php'
+					'path' => '/vendor/adminer-4.3.1-en.php',
+					'target' => '_blank'
 				),
 				array(
 					'name' => 'Opcache GUI',
@@ -183,6 +184,12 @@ HTML;
 	public function getNavbar()
 	{
 		$menu = $this->_buildMenu();
+		$logout = '';
+		if (loadClass('Helper')->isLoginProtected()) {
+			$logout =	'<ul class="navbar-nav">'.
+							'<li class="nav-item text-right"><a class="nav-link" href="/logout.php?id='.session_id().'">Log out</a></li>'.
+						'</ul>';
+		}
 
 		$html = <<<HTML
 			<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
@@ -190,7 +197,7 @@ HTML;
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<a class="navbar-brand" href="/index.php">
-					<img src="/assets/img/logo_30.png" width="30" height="30" class="d-inline-block align-top" alt="">devilbox
+					<img src="/assets/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">devilbox
 				</a>
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -198,8 +205,11 @@ HTML;
 
 						{$menu}
 
+
 					</ul>
+					{$logout}
 				</div>
+
 			</nav>
 			<br/>
 HTML;

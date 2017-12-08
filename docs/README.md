@@ -79,6 +79,7 @@ New folders can be created, deleted and removed during run-time and correspondin
 | **Configuration** | |
 | HHVM | You can choose between PHP 5.6 and PHP 7 mode for HHVM |
 | php.ini | You an overwrite PHP settings for each PHP version. |
+| Custom PHP modules | You can add any custom PHP modules without having to rebuild the Docker container. |
 | my.cnf | You an overwrite MySQL settings for each MySQL version. |
 | **Intranet** | |
 | phpMyAdmin | Manage your MySQL databases here. |
@@ -97,7 +98,7 @@ The devilbox runs on all major operating systems. Below you can quickly check th
 
 |             | ![linux][lin-logo]   | ![windows][win-logo]      | ![osx][osx-logo]     |
 |-------------|----------------------|---------------------------|----------------------|
-| **Docker Version** | normal               | [Docker for Windows][d4w] | [Docker dor Mac][d4m]|
+| **Docker Version** | normal               | [Docker for Windows][d4w] | [Docker for Mac][d4m]|
 | **Current Issues**  | [here][lin-issues]   | [here][win-issues]        | [here][osx-issues]   |
 
 [win-logo]: https://raw.githubusercontent.com/cytopia/icons/master/64x64/windows.png
@@ -119,7 +120,7 @@ The devilbox has not been tested on FreeBSD yet. Current milestones include to m
 
 * **Internet connection** - only required during initial setup for cloning the devilbox repository and pulling the required docker container. Afterwards you can always work offline.
 * [Docker Engine 1.12.0+](https://docs.docker.com/compose/compose-file/compose-versioning/#version-21)
-* [Docker Compose 1.6.0+](https://docs.docker.com/compose/compose-file/compose-versioning/#version-2)
+* [Docker Compose 1.9.0+](https://docs.docker.com/compose/compose-file/compose-versioning/#version-21)
 * On Windows use [Docker for Windows][d4w] (not tested on [Docker Toolbox][dtb])
 * On OSX use [Docker for Mac][d4m] (not tested on [Docker Toolbox][dtb])
 
@@ -171,18 +172,21 @@ There will however be slight differences between the versions and especially wit
 [PHP 7.2](https://github.com/cytopia/docker-php-fpm-7.2) |
 [HHVM](https://github.com/cytopia/docker-hhvm-latest)
 
+** Custom PHP Modules**
+
+Apart from asking for new modules to be bundled with each Docker container, you can simply also just place any missing modules into `mod/(php-fpm|hhvm)-<VERSION>` and add a custom `*.ini` file to load them. See [Custom PHP Modules](Configure.md#425-custom-php-modules) in the Configuration documentation for how to do that in two simple steps.
 
 ## 9. Supported Frameworks and CMS
 
 As far as tested there are no limitations and you can use any Framework or CMS just as you would on your live environment. Below are a few examples of extensively tested Frameworks and CMS:
 
-[![CakePHP](img/logos/cake.png)](https://cakephp.org)
-[![Drupal](img/logos/drupal.png)](https://www.drupal.org)
-[![Laravel](img/logos/laravel.png)](https://laravel.com)
-[![Phalcon](img/logos/phalcon.png)](https://phalconphp.com)
-[![Symfony](img/logos/symfony.png)](https://symfony.com)
-[![Wordpress](img/logos/wordpress.png)](https://wordpress.org)
-[![Yii](img/logos/yii.png)](http://www.yiiframework.com)
-[![Zend](img/logos/zend.png)](https://framework.zend.com)
+[![CakePHP](img/logo_fw/cake.png)](https://cakephp.org)
+[![Drupal](img/logo_fw/drupal.png)](https://www.drupal.org)
+[![Laravel](img/logo_fw/laravel.png)](https://laravel.com)
+[![Phalcon](img/logo_fw/phalcon.png)](https://phalconphp.com)
+[![Symfony](img/logo_fw/symfony.png)](https://symfony.com)
+[![Wordpress](img/logo_fw/wordpress.png)](https://wordpress.org)
+[![Yii](img/logo_fw/yii.png)](http://www.yiiframework.com)
+[![Zend](img/logo_fw/zend.png)](https://framework.zend.com)
 
 Have a look at **[Examples](Examples.md)** for how to set them up on the devilbox.

@@ -21,8 +21,11 @@ Configure |
 1. [Overview](#1-overview)
     1. [The devilbox `.env` file](#11-the-devilbox-env-file)
     2. [The devilbox `cfg/` directory](#12-the-devilbox-cfg-directory)
-    3. [The operating system `hosts` file](#13-the-operating-system-hosts-file)
-    4. [The operating system `resolv.conf` file](#14-the-operating-system-resolvconf-file)
+    3. [The devilbox `mod/` directory](#13-the-devilbox-mod-directory)
+        1. [Custom PHP module example](#134-custom-php-module-example)
+    4. [The devilbox `bash/` directory](#14-the-devilbox-bash-directory)
+    5. [The operating system `hosts` file](#15-the-operating-system-hosts-file)
+    6. [The operating system `resolv.conf` file](#16-the-operating-system-resolvconf-file)
 2. [Devilbox general settings](#2-devilbox-general-settings)
     1. [Verbosity](#21-verbosity)
     2. [Devilbox base path](#22-devilbox-base-path)
@@ -30,6 +33,7 @@ Configure |
 3. [Project settings](#3-project-settings)
     1. [Project domain](#31-project-domain)
     2. [Project path](#32-project-path)
+    3. [Project htdocs directory](#33-project-htdocs directory)
 4. [Container settings](#4-container-settings)
     1. [General](#41-general)
         1. [Timezone](#411-timezone)
@@ -40,9 +44,13 @@ Configure |
         2. [Xdebug](#422-xdebug)
         3. [php.ini](#423-phpini)
         4. [HHVM](#424-hhvm)
+        5. [Custom PHP modules](#425-custom-php-modules)
+        6. [Customize bash and other tools](#426-customize-bash-and-other-tools)
+		7. [Custom environment variables](#427-custom-environment-variables)
     3. [Apache / Nginx](#43-apache--nginx)
         1. [Select Httpd version](#431-select-httpd-version)
         2. [Host port](#432-host-port)
+		3. [Customize the vhost configuration](#433-customize-the-vhost-configuration)
     4. [MySQL](#44-mysql)
         1. [Select MySQL version](#441-select-mysql-version)
         2. [Root password](#442-root-password)
@@ -71,6 +79,8 @@ Configure |
         2. [Host port](#492-host-port)
 5. [Intranet settings](#5-intranet-settings)
     1. [DNS check timeout](#51-dns-check-timeout)
+    2. [Password protection](#52-password-protection)
+	3. [Disable Intranet](#53-disable-intranet)
 6. [Host computer](#6-host-computer)
     1. [/etc/hosts](#61-etchosts)
     2. [Auto-DNS](#62-auto-dns)
@@ -103,32 +113,40 @@ You can get more information here:
 
 #### 1.2 The devilbox `cfg/` directory
 
-Inside the devilbox root directory you will find a foder called `cfg/`. This will contain subdirectories in the form of `<SERVICE>-<VERSION>`. Those folders will be mounted into the appropriate location into the respective docker container in order to overwrite service configuration.
+Inside the devilbox root directory you will find a folder called `cfg/`. This will contain subdirectories in the form of `<SERVICE>-<VERSION>`. Those folders will be mounted into the appropriate location into the respective docker container in order to overwrite service configuration.
 
-Currently only MySQL/MariaDB and PHP/HHVM overrides are supported.
+Currently only MySQL/MariaDB, PHP/HHVM and Apache/Nginx overrides are supported.
 
 The folder structure looks like this:
 ```
 cfg/
+  apache-2.2/
+  apache-2.4/
+  nginx-mainline/
+  nginx-stable/
+
   hhvm-latest/
-  mariadb-10.0/
-  mariadb-10.1/
-  mariadb-10.2/
-  mariadb-10.3/
-  mariadb-5.5/
-  mysql-5.5/
-  mysql-5.6/
-  mysql-5.7/
-  mysql-8.0/
-  percona-5.5/
-  percona-5.6/
-  percona-5.7/
   php-fpm-5.4/
   php-fpm-5.5/
   php-fpm-5.6/
   php-fpm-7.0/
   php-fpm-7.1/
   php-fpm-7.2/
+
+  mariadb-5.5/
+  mariadb-10.0/
+  mariadb-10.1/
+  mariadb-10.2/
+  mariadb-10.3/
+
+  mysql-5.5/
+  mysql-5.6/
+  mysql-5.7/
+  mysql-8.0/
+
+  percona-5.5/
+  percona-5.6/
+  percona-5.7/
 ```
 
 Each of the folders will contain an example file in the following format:
@@ -140,14 +158,53 @@ Only files which have the correct file extensions will be read, all others such 
 
 * Valid PHP config extension: `.ini`
 * Valid MySQL config extension: `.cnf`
+* Valid Httpd config extension: `.conf`
 
-#### 1.3 The operating system `hosts` file
+#### 1.3 The devilbox `mod/` directory
+
+Inside the devilbox root directory you will find a folder called `mod/`. This will contain subdirectories in the form of `(php-fpm|hhvm)-<VERSION>`. Those folders will be mounted into the appropriate location into the respective PHP docker container under `/usr/lib64/php/custom-modules/` in order to provide custom PHP modules.
+
+The folder structure looks like this:
+```
+cfg/
+  hhvm-latest/
+  php-fpm-5.4/
+  php-fpm-5.5/
+  php-fpm-5.6/
+  php-fpm-7.0/
+  php-fpm-7.1/
+  php-fpm-7.2/
+```
+
+Each of the folders are empty by default. Place any PHP modules (`*.so`) inside the versioned folder of your choice.
+
+Modules placed in the above folders are not loaded by default. You will also have to enable them via your custom configuration as described in the above section.
+
+##### 1.3.4 Custom PHP module example
+
+The following example will add a custom [ioncube](https://www.ioncube.com) module for PHP 7.0:
+
+1. Copy `ioncube_loader_lin_7.0.so` to `mod/php-fpm-7.0/ioncube_loader_lin_7.0.so`
+2. Create custom config to enable ioncube in: `cfg/php-fpm-7.0/00-ioncube.ini`
+```shell
+zend_extension = /usr/lib64/php/custom-modules/ioncube_loader_lin_7.0.so
+```
+
+**Note:** PHP configuration files are loaded by file names in alphabetical order and the ioncube zend extension needs to be loaded before any other zend extension. This is the reason why its configuration file name starts with `00-`.
+
+#### 1.4 The devilbox `bash/` directory
+
+Inside the devilbox root directory you will find a folder called `bash/`. Every file inside this folder ending by `*.sh` will be source by your bash, allowing for a customized bash configuration. All files not ending by `*.sh` will be ignored and can be used to create config files for other programs.
+
+The `bash/` folder will be mounted into the PHP/HHVM container to `/etc/bashrc-devilbox.d/`.
+
+#### 1.5 The operating system `hosts` file
 
 On Linux and OSX your hosts file is located at `/etc/hosts` on Windows it will be at `C:\Windows\System32\drivers\etc`. Use this file to setup custom DNS entries if you are not using Auto-DNS.
 
 Read up on it below at `/etc/hosts` or `Auto-DNS` section.
 
-#### 1.4 The operating system `resolv.conf` file
+#### 1.6 The operating system `resolv.conf` file
 
 This file is used to add the devilbox DNS server for Auto-DNS.
 
@@ -248,6 +305,23 @@ $ docker-compose rm -f
 $ docker-compose up -d
 ```
 
+#### 3.3 Project htdocs directory
+
+| `.env` file variable name | Default | Note |
+|---------------------------|---------|------|
+| HTTPD_DOCROOT_DIR         | `htdocs` | A sub directory inside your project directory from which the web server will serve your files.<br/>The full path to the docuement root would be: `${HOST_PATH_HTTPD_DATADIR}/<project-name>/${HTTPD_DOCROOT_DIR}` |
+
+If you rather would use a directory called `www`, just change it to this. Be aware that this will affect all your projects.
+
+**Note:** When changing this value, you must restart the devilbox.
+
+```shell
+# Stop the container
+$ docker-compose stop
+
+# Start your stack
+$ docker-compose up -d
+```
 
 ## 4. Container settings
 
@@ -285,7 +359,6 @@ $ id
 
 **Note:** If your Host computers user id and the containers user id do not match, files will have different access rights inside and outside which might result in permission errors like `access denied`. So make sure to set this value.
 
-**Note:** Files created by the webserver such as uploads, tmp and cache files are still created by the webservers user id and you will probably have to `chmod` them. This issues will be addressed shortly and you will also be able to change the uid/gid of the webserver in the next devilbox release.
 
 ##### 4.1.2 Group id
 
@@ -378,6 +451,97 @@ By default, HHVM is using **PHP-7** mode, you can change this setting to **PHP-5
 
 **Note:** You must then also copy the file to something that ends by `*.ini`.
 
+##### 4.2.5 Custom PHP modules
+
+The devilbox supports to load custom PHP modules for each version without having to rebuild the PHP containers. There are only two things to be done in order to load them:
+
+1. Copy your custom module to `mod/(hhvm|php-fpm)-<VERSION>/*.so`
+2. Create a config file that loads the module in `cfg/(hhvm|php-fpm)-<VERSION>/*.ini`
+
+As you will need to state the Path of the module to be loaded in your configuration file (`*.ini`), you will need to know where those modules are placed inside the docker container. Have a look at the following table to find out:
+
+| Docker  | Module host path           | Path inside Docker container             |
+|---------|----------------------------|------------------------------------------|
+| PHP 5.4 | `mod/php-fpm-5.4/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| PHP 5.5 | `mod/php-fpm-5.5/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| PHP 5.6 | `mod/php-fpm-5.6/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| PHP 7.0 | `mod/php-fpm-7.0/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| PHP 7.1 | `mod/php-fpm-7.1/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| PHP 7.2 | `mod/php-fpm-7.2/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+| HHVM    | `mod/hhvm-latest/<mod>.so` | `/usr/lib64/php/custom-modules/<mod>.so` |
+
+As you can see from the above table, modules are always available in `/usr/lib64/php/custom-modules/` and you can just copy/paste your configuration files for each PHP version.
+
+The following will show an example how to load [ioncube](https://www.ioncube.com) module for PHP 7.0:
+
+1. Copy `ioncube_loader_lin_7.0.so` to `mod/php-fpm-7.0/ioncube_loader_lin_7.0.so`
+2. Create custom config to enable ioncube in: `cfg/php-fpm-7.0/00-ioncube.ini`
+```shell
+zend_extension = /usr/lib64/php/custom-modules/ioncube_loader_lin_7.0.so
+```
+
+**Note:** PHP configuration files are loaded by file names in alphabetical order and the ioncube zend extension needs to be loaded before any other zend extension. This is the reason why its configuration file name starts with `00-`.
+
+##### 4.2.6 Customize bash and other tools
+
+The devilbox supports to load custom configuration files for your Docker containers bash. Put any file ending by `*.sh` into the `bash/` folder and they will automatically be sourced by your container's bash. It is also possible to add any other configuration files into that folder and start your app with the appended configuration path. To better understand how that works, have a look at the paths:
+
+| Docker  | bash host path  | Path inside Docker container      |
+|---------|----------------------------|------------------------|
+| PHP 5.4 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| PHP 5.5 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| PHP 5.6 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| PHP 7.0 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| PHP 7.1 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| PHP 7.2 | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+| HHVM    | `bash/<cfg>.sh` | `/etc/bashrc-devilbox.d/<cfg>.sh` |
+
+So lets assume you also want to change your vim configuration and have vim always use that specific config file during startup. This is achieved by placing the vim config file into that directory and create a bash alias, that always starts vim with that config file:
+
+On your host system do the following:
+
+```shell
+# Create your vim config in the devilbox bash directory `my-vimrc`
+$ vim bash/my-vimrc
+```
+```vim
+" You vim
+set encoding=utf-8              " The encoding displayed
+set nocompatible                " Use vim defaults instead of vi defaults
+set autoread                    " Automatically reload file contents when changed from outside
+set backspace=indent,eol,start  " Allow backspacing over everything in insert mode
+set hidden                      " Start new file with :e without having to save current
+set history=50                  " Remember commands entered in :
+set undolevels=100              " Use many levels of undo
+set shell=$SHELL                " Set Shell
+set more                        " to show pages using `more` in command outpouts
+set title                       " show vim in terminal title
+```
+
+Now add a custom bash config and create an alias to always start vim with the above created config:
+```shell
+$ vim bash/my-bash.sh
+```
+```shell
+alias vim='vim -u /etc/bashrc-devilbox.d/my-vimrc'
+```
+
+The next time you open `vim` within the PHP/HHVM docker container, it will automatically source your `my-vimrc`.
+
+##### 4.2.7 Custom environment variables
+
+If you projects require custom environment variables to be available to PHP or HHVM, you can simply add any variable to the `.env` file. All of them are automatically available to the container.
+
+If your application requires are variable to determine if it is run under development or production, for example: `APPLICATION_ENV`, you can just add this to the `.env` file:
+
+```
+$ cat .env
+
+...
+APPLICATION_ENV=1
+```
+
+
 #### 4.3 Apache / Nginx
 
 ##### 4.3.1 Select Httpd version
@@ -400,6 +564,17 @@ You can choose between Apache and Nginx in different version. All of them are co
 By default the webserver will listen on port 80 (on your Host computer). You can change this to any other port (in case port 80 is already taken).
 
 If you also want to change the listening address (default: 127.0.0.1) to something else, see above or search this document for `LOCAL_LISTEN_ADDRESS`.
+
+##### 4.3.3 Customize the vhost configuration
+
+| `.env` file variable name | Default | Note |
+|---------------------------|---------|------|
+| HTTPD_TEMPLATE_DIR        | `.devilbox`| A sub directory inside your project directory where the web server will look for web server templates in order to load a custom configuration for this specific project. |
+
+If no such directory exists or no templates are available, the chosen web server will use the standard configuration for this virtual host. You can however overwrite each virtual host with custom settings by adding **[vhost-gen](https://github.com/devilbox/vhost-gen)** templates.
+
+Copy all available templates from [vhost-gen templates directory](https://github.com/devilbox/vhost-gen/tree/master/etc/templates) to a a sub directory in your projects dir (By default `.devilbox/`) and adjust those template files to your needs.
+
 
 #### 4.4 MySQL
 
@@ -739,6 +914,27 @@ If you also want to change the listening address (default: 127.0.0.1) to somethi
 
 `DNS_CHECK_TIMEOUT` value is how many seconds to time out.
 
+#### 5.2 Password protection
+
+| `.env` file variable name | Default | Note |
+|---------------------------|---------|------|
+| DEVILBOX_UI_PROTECT       | `0`     | Enable or disable devilbox's Intranet password protection |
+| DEVILBOX_UI_PASSWORD      | ``      | Choose the password to login. (Default username: `devilbox`) |
+
+If you wish, you can password-protect the devilbox intranet (not the vhost projects).
+
+> You could for example allow people from your local network to access the projects hosted on your devilbox (When changing `LOCAL_LISTEN_ADDRESS` to also listen on your external LAN side).
+> However, the devilbox intranet might give away too much information, what other people should not see, such as databases or others.
+> In that case, you should enable password protection.
+
+#### 5.3 Disable Intranet
+
+| `.env` file variable name | Default | Note |
+|---------------------------|---------|------|
+| DEVILBOX_UI_DISABLE       | `0`     | Enable or disable devilbox's Intranet completely. |
+
+If you wish, you can disable the built-in intranet completely. Set this variable to `1` which will remove the vhost that servers the Intranet. All that will be left are your custom project based virtual hosts.
+
 
 ## 6. Host computer
 
@@ -780,12 +976,20 @@ The devilbox provides its own DNS nameserver that automatically configures itsel
 
 You can make advantage of that by adding this DNS nameserver to your host computers DNS config in `/etc/resolv.conf`. Then everytime you make a request (in your Browser for example) to a devilbox project domain, the bundled DNS name server will successfully answer the request and direct you to the project. This will remove the need to make custom `/etc/hosts` entries for each project.
 
+
 **What is required for this to work?**
 
-First of all, you need to make sure that nothing on your host computer is listening on port 53.
+By default, the Bind port (`.env`: `HOST_PORT_BIND=1053`) is set to a non standard DNS port in order to avoid failed devilbox startups in case you already have a local DNS resolver running. So edit your `.env` file and set the Bind port to `53`:
+```
+$ vi .env
+
+HOST_PORT_BIND=53
+```
+
+Then you need to make sure that nothing on your host computer is listening on port 53. Do this before starting up the devilbox.
 
 ```shell
-$ netstat -tulpen | grep ':53'
+$ netstat -tuln | grep ':53'
 ```
 
 If there is already something listening on that port, you will need to stop whatever is listening in port 53 (TCP and UDP).

@@ -188,15 +188,16 @@ lrwxrwxrwx 1 cytopia   11 Jun 14 08:29 htdocs -> cakephp/app/webroot/
 
 To quickly find setup instructions for your framework of choice head over to **[Examples](Examples.md)**:
 
-> 1. [Introduction](Examples.md#1-introduction)
-> 2. [Setup CakePHP](Examples.md#2-setup-cakephp)
-> 3. [Setup Drupal](Examples.md#3-setup-drupal)
-> 4. [Setup Laravel](Examples.md#4-setup-laravel)
-> 5. [Setup Phalcon](Examples.md#5-setup-phalcon)
-> 6. [Setup Symfony](Examples.md#6-setup-symfony)
-> 7. [Setup Wordpress](Examples.md#7-setup-wordpress)
-> 8. [Setup Yii](Examples.md#8-setup-yii)
-> 9. [Setup Zend](Examples.md#9-setup-zend)
+> 2. [Project setup](Examples.md#2-project-setup)
+>     1. [Setup CakePHP](Examples.md#21-setup-cakephp)
+>     2. [Setup Drupal](Examples.md#22-setup-drupal)
+>     3. [Setup Joomla](Examples.md#23-setup-joomla)
+>     4. [Setup Laravel](Examples.md#24-setup-laravel)
+>     5. [Setup Phalcon](Examples.md#25-setup-phalcon)
+>     6. [Setup Symfony](Examples.md#26-setup-symfony)
+>     7. [Setup Wordpress](Examples.md#27-setup-wordpress)
+>     8. [Setup Yii](Examples.md#28-setup-yii)
+>     9. [Setup Zend](Examples.md#29-setup-zend)
 
 
 ## 6. Enter the PHP Docker container
@@ -204,7 +205,7 @@ To quickly find setup instructions for your framework of choice head over to **[
 The PHP Docker container is your workhorse which has many tools pre-installed and you can do every task inside instead of doing it on the docker host. Entering the container is done via a shipped script:
 
 ```shell
-host> ./bash.sh
+host> ./shell.sh
 devilbox@php-7.0.19 in /shared/httpd $
 ```
 
